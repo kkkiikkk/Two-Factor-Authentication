@@ -1,0 +1,38 @@
+{
+  "name": "two-factor-authentication",
+  "version": "1.0.0",
+  "description": "Learning Two-Factor Authentication",
+  "main": "index.js",
+  "scripts": {
+    "start:dev": "nodemon --exec ts-node -- ./src/index.ts",
+    "start": "tsc --build && node ./dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kkkiikkk/Two-Factor-Authentication.git"
+  },
+  "keywords": [
+    "Two-Factor"
+  ],
+  "author": "ruddnovsiy@gmail.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kkkiikkk/Two-Factor-Authentication/issues"
+  },
+  "homepage": "https://github.com/kkkiikkk/Two-Factor-Authentication#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.15",
+    "ts-node": "^10.7.0",
+    "typescript": "^4.6.3"
+  },
+  "dependencies": {
+    "@hapi/hapi": "^20.2.2",
+    "@types/hapi": "^18.0.7",
+    "@types/qrcode": "^1.4.2",
+    "@types/speakeasy": "^2.0.7",
+    "dotenv": "^16.0.0",
+    "hapi": "^18.1.0",
+    "qrcode": "^1.5.0",
+    "speakeasy": "^2.0.0"
+  }
+}
