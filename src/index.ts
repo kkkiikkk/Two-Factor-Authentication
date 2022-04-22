@@ -2,7 +2,7 @@ import * as Hapi from '@hapi/hapi';
 import { Server, } from '@hapi/hapi';
 import {Request} from 'hapi'
 import {NotFoundError} from "./error";
-import { base64, basicValidate, generateSecretKey } from './utils/auth';
+import { base64, basicValidate, generateSecretKey, generateToken, verifyToken } from './utils/auth';
 import { users } from './utils/user';
 
 export const server = new Hapi.Server({port: 3000,});
@@ -13,7 +13,7 @@ export const init = async (isTest = false): Promise<Server> => {
     server.route([{
         method: 'GET', path: '/auth', handler: (r: Request) => {
             try {
-                users.john.secret = generateSecretKey()
+                users.john['secret'] = generateSecretKey()
                 console.log(base64(users.john.username,users.john.password))
 
                 return users.john.secret

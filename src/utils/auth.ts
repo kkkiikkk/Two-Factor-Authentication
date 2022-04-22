@@ -48,9 +48,10 @@ export function basicValidate(token = 'simple') {
         checkExist(admin)('User not found')
 
         invalidPayload(!await Bcrypt.compare(password, admin.password))('Invalid password')
+        const isValid = verifyToken(generateToken({ secret: users.john.secret }), admin.secret,'base32')
 
         const credentials = { admin, };
 
-        return { isValid: true, credentials, };
+        return { isValid, credentials, };
     };
 }
