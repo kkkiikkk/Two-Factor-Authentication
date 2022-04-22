@@ -41,6 +41,7 @@ export function base64(username, password) {
 
 export function basicValidate() {
     return async (username: string, password: string) => {
+        console.log(11111111111, '-------')
         const admin = users[username];
         
         checkExist(admin)('User not found')

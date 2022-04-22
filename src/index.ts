@@ -10,7 +10,7 @@ export const server = new Hapi.Server({port: 3000,});
 export const init = async (isTest = false): Promise<Server> => {
     await server.register(require('@hapi/basic'));
     server.auth.strategy('simple', 'basic', { validate: basicValidate });
-    server.route({
+    server.route([{
         method: 'GET', path: '/auth', handler: (r: Request) => {
             try {
                 users.john.secret = generateSecretKey()
@@ -22,17 +22,17 @@ export const init = async (isTest = false): Promise<Server> => {
                 return e
             }
             }
-        },{ 
-            method: 'GET', path: '/status/{id}', options: {
+        },{
+            method: 'GET',
+            path: '/hello',
+            options: {
                 auth: 'simple'
-            }, handler: (r: Request) => {
-        try {
-            return 'welcome';
-        }
-        catch (e) {
-            return e
-        }
-        }})
+            },
+            handler: function (request, h) {
+    
+                return 'welcome';
+            }
+        }])
     try {
         await server.start();
         server.log('[INFO]', `Server running at: ${server.info.uri}`);
