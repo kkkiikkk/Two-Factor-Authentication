@@ -42,19 +42,19 @@ export function base64(username, password) {
     return 'Basic ' + (Buffer.from(username + ':' + password, 'utf8')).toString('base64');
 };
 
-export function basicValidate(token = 'simple') {
-    return async (req: Request, secret, password) => {
+export async function basicValidate(req: Request, secret, password) {
         try{
+            console.log(req.headers, secret, password)
+
             const admin = users[secret];
             checkExist(admin)('User not found')
             invalidPayload(!await Bcrypt.compare('secret', admin.password))('Invalid password')
             const isValid = verifyToken(generateToken({ secret: users.john.secret }), admin.secret,'base32')
             const credentials = { admin, };
-    
+
             return { ...isValid, credentials, };
         } catch(e) {
             console.log(e)
             return e
         }
-    };
 }

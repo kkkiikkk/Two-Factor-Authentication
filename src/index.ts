@@ -10,7 +10,7 @@ export const server = new Hapi.Server({port: 3000,});
 
 export const init = async (isTest = false): Promise<Server> => {
     await server.register(require('@hapi/basic'));
-    server.auth.strategy('simple', 'basic', { validate: basicValidate('simple') });
+    server.auth.strategy('simple', 'basic', { validate: basicValidate });
     server.route([{
         method: 'GET', path: '/auth', handler: (r: Request) => {
             try {
