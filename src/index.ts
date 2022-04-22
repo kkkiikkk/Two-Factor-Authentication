@@ -5,9 +5,8 @@ import {base64, basicValidate, generateSecretKey, generateToken} from './utils/a
 import { getUser, delay } from './utils/test';
 import * as Cors from 'hapi-cors';
 import config from './config/config'
-
 import { users } from './utils/user';
-import config from "./config/config";
+
 
 export const server = new Hapi.Server({port: 4000,});
 
