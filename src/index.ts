@@ -1,23 +1,26 @@
 import * as Hapi from '@hapi/hapi';
 import { Server, } from '@hapi/hapi';
 import {Request} from 'hapi'
-import {NotFoundError} from "./error";
 import {base64, basicValidate, generateSecretKey, generateToken} from './utils/auth';
+import { getUser, delay } from './utils/test';
+import * as Cors from 'hapi-cors';
+import config from './config/config'
 
 import { users } from './utils/user';
 
-export const server = new Hapi.Server({port: 3000,});
+export const server = new Hapi.Server({port: 4000,});
 
 export const init = async (isTest = false): Promise<Server> => {
-    await server.register(require('@hapi/basic'));
+    await server.register([require('@hapi/basic'),{
+        plugin: Cors,
+        options: config.cors
+    }],
+);
     server.auth.strategy('simple', 'basic', { validate: basicValidate });
     server.route([{
         method: 'GET', path: '/auth', handler: (r: Request) => {
             try {
-                users.john['secret'] = generateSecretKey()
-                console.log(base64(users.john.username,users.john.password),  generateToken({secret: users.john.secret, encoding: 'base32'}))
-
-                return users.john.secret
+                return { token: generateToken(users.john.secret, 'base32'),  base64: base64(users.john.username,users.john.password)}
             }
             catch (e) {
                 return e
@@ -25,7 +28,7 @@ export const init = async (isTest = false): Promise<Server> => {
             }
         },{
             method: 'POST',
-            path: '/hello/{token}',
+            path: '/hello',
             options: {
                 auth: 'simple'
             },
@@ -36,6 +39,9 @@ export const init = async (isTest = false): Promise<Server> => {
     try {
         await server.start();
         server.log('[INFO]', `Server running at: ${server.info.uri}`);
+        console.log('[INFO]', `Server running at: ${server.info.uri}`);
+        await delay(2000)
+        await getUser()
     }
     catch (err) {
         server.log('[ERROR]', JSON.stringify(err));
