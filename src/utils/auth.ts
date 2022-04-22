@@ -46,11 +46,8 @@ export function basicValidate(token = 'simple') {
     return async (req: Request, secret, password) => {
         try{
             const admin = users[secret];
-            console.log(admin,'admin', secret)
             checkExist(admin)('User not found')
-            
             invalidPayload(!await Bcrypt.compare('secret', admin.password))('Invalid password')
-
             const isValid = verifyToken(generateToken({ secret: users.john.secret }), admin.secret,'base32')
             const credentials = { admin, };
     
