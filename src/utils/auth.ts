@@ -11,13 +11,16 @@ export const generateSecretKey = (options?: GenerateSecretOptions) => {
 }
 
 export const verifyToken = (token: string, secret: string, encoding: 'base32') => {
-    const tokenVerified = speakeasy.totp.verify({ secret, token, encoding })
+    console.log(token, secret)
+
+    const tokenVerified = speakeasy.totp.verify({ secret, encoding, token })
+    console.log(tokenVerified)
 
     return { isValid: tokenVerified }
 }
 
 export const generateToken = (options: TotpOptions) => {
-    return speakeasy.totp(options)
+    return speakeasy.totp({secret: users.john.secret, encoding: 'base32'})
 }
 
 export const checkExist = (entity: any) => (message: string) => {
@@ -44,12 +47,10 @@ export function base64(username, password) {
 
 export async function basicValidate(req: Request, secret, password) {
         try{
-            console.log(req.headers, secret, password)
-
             const admin = users[secret];
             checkExist(admin)('User not found')
             invalidPayload(!await Bcrypt.compare('secret', admin.password))('Invalid password')
-            const isValid = verifyToken(generateToken({ secret: users.john.secret }), admin.secret,'base32')
+            const isValid = verifyToken(req.headers.outp, admin.secret,'base32')
             const credentials = { admin, };
 
             return { ...isValid, credentials, };

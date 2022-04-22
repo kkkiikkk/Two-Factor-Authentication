@@ -5,6 +5,7 @@ import {NotFoundError} from "./error";
 import {base64, basicValidate, generateSecretKey, generateToken} from './utils/auth';
 
 import { users } from './utils/user';
+import config from "./config/config";
 
 export const server = new Hapi.Server({port: 3000,});
 
@@ -14,8 +15,10 @@ export const init = async (isTest = false): Promise<Server> => {
     server.route([{
         method: 'GET', path: '/auth', handler: (r: Request) => {
             try {
-                users.john['secret'] = generateSecretKey()
-                console.log(base64(users.john.username,users.john.password),  generateToken({secret: users.john.secret, encoding: 'base32'}))
+                console.log(
+                    base64(users.john.username,users.john.password),
+                    generateToken({secret: users.john.secret, encoding: 'base32', time: config.auth.twoFactorOptions.time,})
+                )
 
                 return users.john.secret
             }
@@ -25,7 +28,7 @@ export const init = async (isTest = false): Promise<Server> => {
             }
         },{
             method: 'POST',
-            path: '/hello/{token}',
+            path: '/hello',
             options: {
                 auth: 'simple'
             },
