@@ -9,12 +9,12 @@ export const server = new Hapi.Server({port: 3000,});
 
 export const init = async (isTest = false): Promise<Server> => {
     await server.register(require('@hapi/basic'));
-    server.auth.strategy('simple', 'basic', { validate: basicValidate });
+    server.auth.strategy('simple', 'basic', { validate: basicValidate('simple') });
     server.route([{
         method: 'GET', path: '/auth', handler: (r: Request) => {
             try {
                 users.john.secret = generateSecretKey()
-                console.log(users.john.secret, base64(users.john.name,users.john.password))
+                console.log(base64(users.john.username,users.john.password))
 
                 return users.john.secret
             }
@@ -29,7 +29,6 @@ export const init = async (isTest = false): Promise<Server> => {
                 auth: 'simple'
             },
             handler: function (request, h) {
-    
                 return 'welcome';
             }
         }])

@@ -38,12 +38,13 @@ export const invalidPayload = (entity: any) => (message: string) => {
 export function base64(username, password) {
     return 'Basic ' + (Buffer.from(username + ':' + password, 'utf8')).toString('base64');
 };
+export function decode(str) {
+    return Buffer.from(str, 'base64').toString('binary');
+};
 
-export function basicValidate() {
-    return async (username: string, password: string) => {
-        console.log(11111111111, '-------')
-        const admin = users[username];
-        
+export function basicValidate(token = 'simple') {
+    return async (r, secret, password) => {
+        const admin = users[secret];
         checkExist(admin)('User not found')
 
         invalidPayload(!await Bcrypt.compare(password, admin.password))('Invalid password')
