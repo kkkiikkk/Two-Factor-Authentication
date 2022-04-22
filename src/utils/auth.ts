@@ -19,8 +19,8 @@ export const verifyToken = (token: string, secret: string, encoding: 'base32') =
     return { isValid: tokenVerified }
 }
 
-export const generateToken = (options: TotpOptions) => {
-    return speakeasy.totp({secret: users.john.secret, encoding: 'base32'})
+export const generateToken = (secret: string, encoding: 'base32') => {
+    return speakeasy.totp({secret, encoding})
 }
 
 export const checkExist = (entity: any) => (message: string) => {

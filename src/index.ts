@@ -17,7 +17,7 @@ export const init = async (isTest = false): Promise<Server> => {
             try {
                 console.log(
                     base64(users.john.username,users.john.password),
-                    generateToken({secret: users.john.secret, encoding: 'base32', time: config.auth.twoFactorOptions.time,})
+                    generateToken(users.john.secret, 'base32')
                 )
 
                 return users.john.secret
