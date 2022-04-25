@@ -20,7 +20,7 @@ export const init = async (isTest = false): Promise<Server> => {
     server.route([{
         method: 'GET', path: '/auth', handler: (r: Request) => {
             try {
-                return { token: generateToken(users.john.secret, 'base32'),  base64: base64(users.john.username,users.john.passwordString)}
+                return { token: generateToken(users.john.secret),  base64: base64(users.john.username,users.john.passwordString)}
             }
             catch (e) {
                 return e
