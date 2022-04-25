@@ -1,5 +1,8 @@
 import {config} from 'dotenv';
+import {Encoding} from "speakeasy";
 config()
+
+
 
 export default {
     cors: {
@@ -12,10 +15,9 @@ export default {
     },
     auth: {
         twoFactorOptions: {
-            length: process.env.LENGTH_TOKEN,
             window: Number(process.env.WINDOW),
             time: Number(process.env.TIME),
-            encoding: 'base32'
+            encoding: String(process.env.ENCODING) as Encoding
         }
     }
 }

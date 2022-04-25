@@ -5,18 +5,19 @@ import {ForbbidenError} from "../error";
 import * as Bcrypt from 'bcrypt';
 import { users } from './user';
 import {Request} from "@hapi/hapi";
+import config from "../config/config";
 
 export const generateSecretKey = (options?: GenerateSecretOptions) => {
     return speakeasy.generateSecret(options).base32
 }
 
 export const verifyToken = (token: string, secret: string, encoding: 'base32') => {
-    const tokenVerified = speakeasy.totp.verify({ secret, encoding, token })
+    const tokenVerified = speakeasy.totp.verify({ secret, encoding, token, ...config.auth.twoFactorOptions})
     return { isValid: tokenVerified }
 }
 
 export const generateToken = (secret: string, encoding: 'base32') => {
-    return speakeasy.totp({secret, encoding})
+    return speakeasy.totp({secret, encoding, ...config.auth.twoFactorOptions})
 }
 
 export const checkExist = (entity: any) => (message: string) => {
