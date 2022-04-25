@@ -36,7 +36,7 @@ export async function basicValidate(req: Request, secret, password) {
             }
             const isValid = verifyToken(req.headers.outp, admin.secret)
 
-            return { isValid, isValid ? { admin, } : {}, };
+            return { isValid, credentials: isValid ? { admin, } : {}, };
         } catch(e) {
             console.log(e)
             return e
