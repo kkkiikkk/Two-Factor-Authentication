@@ -46,8 +46,6 @@ export async function basicValidate(req: Request, secret, password) {
         try{
             const admin = users[secret];
             checkExist(admin)('User not found')
-            // const hash = Bcrypt.hashSync(password, Bcrypt.genSaltSync(10));
-            console.log(password,'password', admin.password, admin.passwordString)
             invalidPayload(!await Bcrypt.compare(admin.passwordString, password))('Invalid password')
             const isValid = verifyToken(req.headers.outp, admin.secret)
             const credentials = { admin, };
