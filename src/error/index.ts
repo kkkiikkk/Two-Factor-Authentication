@@ -1,2 +1,2 @@
-export * from './NotFoundError'
-export * from './ForbbidenError'
+export * from './Error'
+export * from './Message'

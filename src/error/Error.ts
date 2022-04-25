@@ -1,9 +1,4 @@
-export class ApplicationError extends Error {
-    get name() {
-        return this.constructor.name;
-    }
+export enum Error {
+    USER_NOT_FOUND = 404,
+    INVALID_PASSWORD = 403
 }
-
-export class DatabaseError extends ApplicationError { }
-
-export class UserError extends ApplicationError { }

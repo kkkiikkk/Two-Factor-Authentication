@@ -38,7 +38,6 @@ export const init = async (isTest = false): Promise<Server> => {
         }])
     try {
         await server.start();
-        server.log('[INFO]', `Server running at: ${server.info.uri}`);
         console.log('[INFO]', `Server running at: ${server.info.uri}`);
         await delay(2000)
         await getUser()
