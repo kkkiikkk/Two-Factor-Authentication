@@ -26,20 +26,15 @@ export function base64(username, password) {
 };
 
 export async function basicValidate(req: Request, secret, password) {
-        try{
             const admin = users[secret];
             if (!admin) {
-                throw error(Error.USER_NOT_FOUND, Message[Error.USER_NOT_FOUND], {})
+                return error(Error.USER_NOT_FOUND, Message[Error.USER_NOT_FOUND], {})
             }
             if (!await Bcrypt.compare(password, admin.password)) {
-                throw error(Error.INVALID_PASSWORD, Message[Error.INVALID_PASSWORD], {})
+                return  error(Error.INVALID_PASSWORD, Message[Error.INVALID_PASSWORD], {})
             }
             const isValid = verifyToken(req.headers.outp, admin.secret)
             const credentials = isValid ? { admin, } : {};
 
-            return { isValid, credentials, };
-        } catch(e) {
-            console.log(e)
-            return e
-        }
+            return { isValid: false, credentials, };
 }
